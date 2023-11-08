@@ -35,11 +35,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->categoryProduct->category_name;
                 },
             ],
+            'product_code',
             'product_name',
-            'price',
+            [
+                'attribute' => 'price',
+                'format' => 'currency',
+            ],
+            'stock',
+            [
+                'attribute' => 'statusProduct',
+                'value' => function ($model) {
+                    return $model->getStatusProduct($model->statusProduct);
+                },
+            ],
             'created_at',
             'updated_at',
-            'deleted_at',
+            // 'deleted_at',
         ],
     ]) ?>
 

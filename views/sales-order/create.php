@@ -22,16 +22,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'invoice')->textInput() ?>
 
-    <?php $ctg = ArrayHelper::map(Product::find()->where(['deleted_at' => null])->orderBy(['product_name' => SORT_ASC])->asArray()->all(), 'id', 'product_name');  ?>
+    <?php $ctg = ArrayHelper::map(Product::find()->where(['deleted_at' => null])->where(['statusProduct' => 1])->orderBy(['product_name' => SORT_ASC])->asArray()->all(), 'id', 'product_name');  ?>
     <?php echo $form->field($model, 'id_product')->dropDownList(
         $ctg,
         [
             'prompt' => '-Select-',
             'onchange' => '
             $.get("' . Yii::$app->urlManager->createUrl('product/list') . '",{ "id" : $(this).val() }, function( data ) {
-                $("#total_price").val(data);
-                $("#price").val(data);
-              $("#qty_product").val(1);
+                $("#total_price").val(data["price"]);
+                $("#price").val(data["price"]);
+                $("#stock").val(data["stock"]);
+                $("#qty_product").val(1);
+                $("#qty_product").prop("max",data["stock"]);
             });
           '
         ]
@@ -39,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <?= $form->field($model, 'qty', ['inputOptions' => ['type' => 'number']])->textInput(['id' => 'qty_product', 'min' => 1]) ?>
+    <?= $form->field($model, 'stock')->hiddenInput(['value' => '', 'id' => 'stock'])->label(false); ?>
     <?= $form->field($model, 'price')->hiddenInput(['value' => '', 'id' => 'price'])->label(false); ?>
     <?= $form->field($model, 'total_price', ['inputOptions' => ['type' => 'number']])->textInput(['id' => 'total_price', 'readonly' => true]) ?>
 
@@ -55,8 +58,14 @@ $this->params['breadcrumbs'][] = $this->title;
     $('#qty_product').on('input', function() {
         let qty = parseInt($('#qty_product').val());
         let price = parseInt($('#price').val());
+        let maxStock = parseInt($('#stock').val());
         if (isNaN(qty) || qty == 0) {
             qty = 1;
+        }
+
+        if(qty > maxStock){
+            $('#qty_product').val(maxStock);
+            qty = maxStock;
         }
 
         let totalPrice = price * qty;

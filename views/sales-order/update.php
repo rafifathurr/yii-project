@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($model, 'invoice')->textInput() ?>
 
+    <?= $form->field($model, 'date_order', ['inputOptions' => ['type' => 'date']])->textInput(['max' => date('Y-m-d')]) ?>
     <?php $ctg = ArrayHelper::map(Product::find()->where(['deleted_at' => null])->orderBy(['product_name' => SORT_ASC])->asArray()->all(), 'id', 'product_name');  ?>
     <?php echo $form->field($model, 'id_product')->dropDownList(
         $ctg,
@@ -28,9 +29,9 @@ $this->params['breadcrumbs'][] = 'Update';
             'prompt' => '-Select-',
             'onchange' => '
         $.get("' . Yii::$app->urlManager->createUrl('product/list') . '",{ "id" : $(this).val() }, function( data ) {
-            $("#price").val(data);
-            $("#total_price").val(data);
-          $("#qty_product").val(1);
+            $("#total_price").val(data["price"]);
+            $("#price").val(data["price"]);
+            $("#qty_product").val(1);
         });
       '
         ]

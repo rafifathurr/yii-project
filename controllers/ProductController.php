@@ -71,9 +71,8 @@ class ProductController extends AuthController
 
     public function actionList($id)
     {
-        $products = Product::find()->where(['id' => $id])->one();
-
-        return $products->price;
+        $products = Product::find()->select(['price', 'stock'])->where(['id' => $id])->one();
+        return $this->asJson($products);
     }
 
 
@@ -90,28 +89,37 @@ class ProductController extends AuthController
         $model->created_at = $this->datenow();
         $model->updated_at = $this->datenow();
 
-        if (isset($_POST['UploadForm'])) {
+        // if (isset($_POST['UploadForm'])) {
 
-            dump($_POST['UploadForm']);
-            die;
+        //     dump($uploadFile);
+        //     die;
 
-            // $dir_product = Yii::getAlias('@assets/images') . '/' . $model->id;
-            // if (!file_exists($dir_product)) {
-            //     mkdir($dir_product, 0777, true);
-            // }
+        //     $uploadFile->imageFiles = UploadedFile::getInstance($uploadFile, 'imageFile');
+        //     try {
+        //         $uploadFile->upload();
+        //     } catch (Exception $e) {
+        //         dump($e);
+        //         die;
+        //         //throw $th;
+        //     }
 
-            // $uploadFile->imageFiles = UploadedFile::getInstances($uploadFile, 'imageFiles');
+        //     // $dir_product = Yii::getAlias('@assets/images') . '/' . $model->id;
+        //     // if (!file_exists($dir_product)) {
+        //     //     mkdir($dir_product, 0777, true);
+        //     // }
 
-            // foreach ($uploadFile->imageFiles as $file) {
-            //     // echo $file->baseName; die;
-            //     $img = new ProductImages();
-            //     $img->IdProduct = $model->Id;
-            //     // date('Ymd') . str_random(30)
-            //     $img->Filename = $file->baseName . '.' . $file->extension;
-            //     $file->saveAs($dir_product . '/' . $img->Filename);
-            //     $img->save();
-            // }
-        }
+        //     // $uploadFile->imageFiles = UploadedFile::getInstances($uploadFile, 'imageFiles');
+
+        //     // foreach ($uploadFile->imageFiles as $file) {
+        //     //     // echo $file->baseName; die;
+        //     //     $img = new ProductImages();
+        //     //     $img->IdProduct = $model->Id;
+        //     //     // date('Ymd') . str_random(30)
+        //     //     $img->Filename = $file->baseName . '.' . $file->extension;
+        //     //     $file->saveAs($dir_product . '/' . $img->Filename);
+        //     //     $img->save();
+        //     // }
+        // }
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -139,6 +147,7 @@ class ProductController extends AuthController
      */
     public function actionUpdate($id)
     {
+        $uploadFile = new UploadForm();
         $model = $this->findModel($id);
         $model->updated_at = $this->datenow();
 
@@ -153,6 +162,7 @@ class ProductController extends AuthController
 
         return $this->render('update', [
             'model' => $model,
+            'images' => $uploadFile
         ]);
     }
 

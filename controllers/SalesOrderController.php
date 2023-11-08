@@ -6,6 +6,7 @@ use Yii;
 use app\models\SalesOrder;
 use app\models\SalesOrderSearch;
 use app\components\AuthController;
+use app\models\Product;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\VarDumper;
@@ -79,13 +80,25 @@ class SalesOrderController extends AuthController
         $model->updated_at = $this->datenow();
 
         if ($this->request->isPost) {
-            $invoice = $_POST['SalesOrder']['invoice'];
-            $checkInv = SalesOrder::find()->where(['invoice'  => $invoice, 'deleted_at' => null])->all();
+            $postData = $_POST['SalesOrder'];
+            $invoice = $postData['invoice'];
+            $idProduct = $postData['id_product'];
+            $qtyProduct = $postData['qty'];
+            $stockProduct = $postData['stock'];
+
+            $productModel = Product::findOne(['id',$idProduct]);
+
+            $checkInv = SalesOrder::find()->where(['invoice'  => $invoice, 'deleted_at' => null])->one();
             if (!is_null($checkInv)) {
                 Yii::$app->session->setFlash('error', "Invoice was exist.");
             } else {
                 if ($model->load($this->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', "Sales Order created successfully.");
+                    $resultStock = $stockProduct - $qtyProduct;
+                    $productModel->stock = $resultStock;
+                    $productModel->statusProduct = $resultStock == 0 ? 0 : 1;
+                    if ($productModel->save()) {
+                        Yii::$app->session->setFlash('success', "Sales Order created successfully.");
+                    }
                 } else {
                     Yii::$app->session->setFlash('success', "Sales Order created successfully.");
                 }

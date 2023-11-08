@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ); ?>
         </div>
     </div>
-    <?= $form->field($images, 'filePhoto')->fileInput(['id' => 'uploadedFile'])->label('Photo Product') ?>
+    <?= $form->field($images, 'imageFiles')->fileInput(['id' => 'uploadedFile', 'multiple' => true, 'accept' => 'image/*'])->label('Photo Product') ?>
 
     <img id="img" src="#" style="display:none;" />
     <br>
@@ -78,5 +78,43 @@ $this->params['breadcrumbs'][] = $this->title;
 
             reader.readAsDataURL(files[0]);
         }
+    });
+
+    $('#stockProduct').on('input', function() {
+        let stockProduct = $('#stockProduct').val();
+        if (stockProduct == 0) {
+            $('#product-statusproduct').val(0).change();
+        } else {
+            $('#product-statusproduct').val(1).change();
+        }
+
+    });
+</script><script>
+    $('#uploadedFile').on('change', function() {
+        let files = $('#uploadedFile').prop('files');
+
+        if (files && files[0]) {
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#img').css("display", "block");
+                $('#img')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(250);
+            };
+
+            reader.readAsDataURL(files[0]);
+        }
+    });
+
+    $('#stockProduct').on('input', function() {
+        let stockProduct = $('#stockProduct').val();
+        if (stockProduct == 0) {
+            $('#product-statusproduct').val(0).change();
+        } else {
+            $('#product-statusproduct').val(1).change();
+        }
+
     });
 </script>

@@ -17,7 +17,7 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'price'], 'integer'],
+            [['id', 'price', 'stock', 'statusProduct'], 'integer'],
             [['product_code', 'product_name', 'id_category', 'product_name'], 'safe'],
         ];
     }
@@ -60,6 +60,8 @@ class ProductSearch extends Product
         $query->andFilterWhere([
             'id' => $this->id,
             'price' => $this->price,
+            'stock' => $this->stock,
+            'statusProduct' => $this->statusProduct
         ])
             ->andWhere(['products.deleted_at'  => null]);
 

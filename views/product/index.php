@@ -38,15 +38,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'product_name',
             [
-                'attribute' => 'id_category',
+                'attribute' => 'stock',
+                'contentOptions' => ['class' => 'text-end', 'style' => 'width:10%;'],
+            ],
+            [
+                'attribute' => 'statusProduct',
                 'value' => function ($model) {
-                    return $model->categoryProduct->category_name;
+                    return $model->getStatusProduct($model->statusProduct);
                 },
+                'filter' => array(0 => "InActive", 1 => "Active"),
             ],
             [
                 'attribute' => 'price',
                 'format' => 'currency',
-                'contentOptions' => ['class' => 'text-end'],
+                'contentOptions' => ['class' => 'text-end', 'style' => 'width:10%;'],
             ],
             [
                 'header' => 'Action',

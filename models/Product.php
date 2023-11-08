@@ -59,7 +59,16 @@ class Product extends \yii\db\ActiveRecord
     }
 
     public function getCategoryProduct()
-	{
-		return $this->hasOne(CategoryProduct::class, ['id' => 'id_category']);
-	}
+    {
+        return $this->hasOne(CategoryProduct::class, ['id' => 'id_category']);
+    }
+
+    public function getStatusProduct($status)
+    {
+        if ($status == 0) {
+            return 'InActive';
+        } else {
+            return 'Active';
+        }
+    }
 }
