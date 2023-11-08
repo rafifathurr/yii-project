@@ -44,9 +44,6 @@ class DashboardController extends AuthController
      */
     public function actionIndex()
     {
-        // $searchModel = new SalesOrderSearch();
-        // $dataProvider = $searchModel->search($this->request->queryParams);
-
         $currMonth = date('m');
         $currYear = date('Y');
         $firstMonth = 1;
