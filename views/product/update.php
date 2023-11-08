@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = 'Update';
             ); ?>
         </div>
     </div>
-    <?= $form->field($images, 'imageFiles')->fileInput(['id' => 'uploadedFile', 'multiple' => true, 'accept' => 'image/*'])->label('Photo Product') ?>
+    <?php // $form->field($images, 'imageFiles')->fileInput(['id' => 'uploadedFile', 'multiple' => true, 'accept' => 'image/*'])->label('Photo Product') ?>
 
     <img id="img" src="#" style="display:none;" />
     <br>

@@ -40,6 +40,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
+            ['label' => 'Dashboard', 'url' => ['/dashboard/index']],
             ['label' => 'Sales Order', 'url' => ['/sales-order/index']],
             ['label' => 'Product', 'url' => ['/product/index']],
             ['label' => 'Category Product', 'url' => ['/category-product/index']],

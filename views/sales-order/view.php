@@ -37,7 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->product->product_name;
                 },
             ],
-            'total_price',
+            [
+                'attribute' => 'total_price',
+                'format' => 'currency',
+            ],
             'created_at',
             'updated_at',
             'deleted_at',

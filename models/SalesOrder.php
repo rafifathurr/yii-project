@@ -2,17 +2,6 @@
 
 namespace app\models;
 
-/**
- * This is the model class for table "sales_order".
- *
- * @property int $id
- * @property string|null $invoice
- * @property int|null $id_product
- * @property string|null $total_price
- * @property string|null $created_at
- * @property string|null $updated_at
- * @property string|null $deleted_at
- */
 class SalesOrder extends \yii\db\ActiveRecord
 {
     /**
